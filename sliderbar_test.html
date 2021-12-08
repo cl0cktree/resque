@@ -16,8 +16,8 @@
     
         .wrapper_slider>div:nth-of-type(2){position:relative;margin:4px auto 0;}
         .wrapper_slider>div:nth-of-type(2)>span{position:absolute;color:#666;}
-        .wrapper_slider>div:nth-of-type(2) .slider_min{left:0;}
-        .wrapper_slider>div:nth-of-type(2) .slider_max{right:0;}
+        .wrapper_slider>div:nth-of-type(2) .slider_min{left:-20px;}
+        .wrapper_slider>div:nth-of-type(2) .slider_max{right:-20px;}
     </style>
     <script defer>
         document.addEventListener("DOMContentLoaded", function(){
@@ -43,19 +43,21 @@
             var animate_box;
             var stop_animate_box;
             var mouse_down_start;
-            var slider_data_per;
             var slider_data_unit;
             var slider_data_ratio;
             var slider_icon_point;
             var slider_bar_per=100*slider_icon_point/slider_bar_width;
+            var slider_status_width=Number(vanila_slider_status.clientWidth/2);
             var slider_bar_halfButton=Number(slider_bar_button.clientWidth/2);
             var slider_data_default=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_bar_halfButton;
+            var slider_data_default_status=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_status_width;
             var slider_pointer_per=(slider_data_default+slider_bar_halfButton)/slider_bar_width;
+            var slider_data_per=((slider_data_max)*slider_pointer_per);
             var minus_data_cal=(slider_data_cal.length-1)*-1;
             var max_min_ratio=Math.round(slider_data_max/slider_data_cal);
             var sep_max_min=slider_data_max.slice(minus_data_cal,slider_data_max.length);
             var round_data_min=(sep_max_min)/slider_data_cal;
-            var pattern_sep;
+            var pattern_sep=slider_data_per.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
             // var slider_bar_button_before=document.documentElement.style.setProperty('content',slider_data_ratio);
             var plus_num=0;
             var animation_frame_1 = 0;
@@ -63,34 +65,31 @@
             var resize_time = 300;
             var resize_timer = null;
 
-            function vanila_slider_move(){
-                window.addEventListener('resize', function(){
-                    clearTimeout(resize_timer);
-                    resize_timer = setTimeout(function(){
-                        default_data();
-                    }, resize_time);
-                });
+            vanila_slider_status.innerHTML=pattern_sep;
 
-                // 수치 시험 용-
-                if(slider_data_cal>max_min_ratio){
-                    console.log('max_min_ratio.length = '+max_min_ratio.toString().length);
-                    console.log('뒤에서 slider_data_cal 자릿수 만큼 = '+sep_max_min);
-                }else{
-                    console.log('slider_data_cal.length = '+slider_data_cal.length);
-                    console.log('뒤에서 slider_data_cal 자릿수 반올림 = '+round_data_min);
-                }
-                //-------------
-                function default_data(){
-                    slider_bar_width=vanila_slider_bar.clientWidth;
-                    slider_data_default=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_bar_halfButton;
-                    slider_data_per=((slider_data_max)*slider_pointer_per);
-                    slider_bar_button.style.left=slider_data_default+'px';
-                    vanila_slider_status.style.left=slider_data_default+'px';
-                    vanila_slider_over.style.width=slider_data_default+slider_bar_button.clientWidth+'px';
-                    pattern_sep=slider_data_per.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-                    vanila_slider_status.innerHTML=pattern_sep;
-                    console.log('1 = '+vanila_slider_over.style.width+' / 2 = '+max_min_ratio);
-                };
+            window.addEventListener('resize', function(){
+                clearTimeout(resize_timer);
+                resize_timer = setTimeout(function(){
+                    console.log('100 = '+((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)+' / 200 = '+Number(vanila_slider_status.clientWidth)+' / vanila_slider_status = '+Number(vanila_slider_status.clientWidth/2));
+                    default_data();
+                }, resize_time);
+            });
+            
+            function default_data(){
+                slider_status_width=Number(vanila_slider_status.clientWidth/2);
+                slider_bar_width=vanila_slider_bar.clientWidth;
+                slider_data_default=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_bar_halfButton;
+                slider_data_default_status=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_status_width;
+                slider_data_per=((slider_data_max)*slider_pointer_per);
+                slider_bar_button.style.left=slider_data_default+'px';
+                vanila_slider_status.style.left=slider_data_default_status+'px';
+                vanila_slider_over.style.width=slider_data_default+slider_bar_button.clientWidth+'px';
+                pattern_sep=slider_data_per.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                vanila_slider_status.innerHTML=pattern_sep;
+                console.log('1 = '+((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)+' / 2 = '+slider_status_width+' / vanila_slider_status = '+Number(vanila_slider_status.clientWidth/2));
+            };
+
+            function vanila_slider_move(){
                 function animate_frame(){
                     for(i=0;i<slider_data_default;i++){
                         animate_box = setTimeout(function(){
@@ -109,6 +108,7 @@
                     slider_icon_point=slide_icon_pageX-slider_bar_start;
                     slider_bar_per=Math.floor((slider_data_max/(slider_data_cal))*Math.floor((slider_data_cal*slider_icon_point)/(slider_bar_width)));
                     slider_data_default=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_bar_halfButton;
+                    slider_data_default_status=((vanila_slider_bar.getAttribute('data-default')/100)*slider_bar_width)-slider_status_width;
                     slider_pointer_per=(slider_data_default+slider_bar_halfButton)/slider_bar_width;
                     slider_data_per=(slider_data_max*slider_pointer_per);
                     slider_data_ratio=Math.floor((slider_data_max)*(slider_bar_per/Number(slider_data_cal)));
@@ -129,7 +129,7 @@
                 };
                 function slider_move(){
                     slider_bar_button.style.left=slider_icon_point-slider_bar_halfButton+'px';
-                    vanila_slider_status.style.left=slider_icon_point-slider_bar_halfButton+'px';
+                    vanila_slider_status.style.left=slider_icon_point-slider_status_width+'px';
                     vanila_slider_over.style.width=slider_icon_point+slider_bar_halfButton+'px';
                     pattern_sep=slider_bar_per.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                     vanila_slider_status.innerHTML=pattern_sep;
@@ -260,8 +260,6 @@
                     touch_func();
                 };
 
-                default_data();
-
                 vanila_slider_bar.addEventListener('click',vanila_mouseClick,false);
                 vanila_slider_bar.addEventListener('mousedown',vanila_mouseDown,false);
                 vanila_slider_bar.addEventListener('mousemove',vanila_mouseMove,false);
@@ -277,8 +275,8 @@
                 var wrap_slider_path=wrapper_slider.append(wrapper_slider_create);
                 wrapper_slider_create.innerHTML+='<span class="slider_min">'+slider_data_min.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'</span><span class="slider_max">'+slider_data_max.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'</span>';
             };
+            default_data();
             option_min_max();
-            
             vanila_slider_move();
         });
     </script>
