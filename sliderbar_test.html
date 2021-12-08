@@ -104,6 +104,7 @@
 
                 function slider_math(){
                     slider_bar_width=vanila_slider_bar.clientWidth;
+                    slider_status_width=Number(vanila_slider_status.clientWidth/2);
                     slider_bar_start=(window.innerWidth-slider_bar_width)/2;
                     slider_icon_point=slide_icon_pageX-slider_bar_start;
                     slider_bar_per=Math.floor((slider_data_max/(slider_data_cal))*Math.floor((slider_data_cal*slider_icon_point)/(slider_bar_width)));
