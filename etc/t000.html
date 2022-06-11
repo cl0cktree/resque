@@ -1,0 +1,2964 @@
+<base href="kbxhealth.com:8269">
+<html lang="ko" class="s600 col8 linux chrome android ui-m">
+<head>
+<title>KB골든라이프X</title>
+<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-KDKLZD7"></script>
+<script src="/senior/js/libs/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"></script>
+
+<meta charset="utf-8">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport">
+<meta name="format-detection" content="telephone=no">
+
+<!-- SNS 공유하기에 들어가는 정보 START -->
+<meta property="og:type" content="website">
+<meta id="meta_og_url" property="og:url" ontent="https://www.kbgoldenlifex.com/senior/XAA75M53010.kb?">
+<meta id="meta_og_title" property="og:title" content="[KB골든라이프X]">
+<meta id="meta_og_description" property="og:description" content="">
+
+	<!-- 이미지 없을 시 기본값 -->
+	<meta id="meta_og_image" property="og:image" content="https://www.kbgoldenlifex.com/senior/img/sns.png">
+
+
+<!-- SNS 공유하기에 들어가는 정보 END -->
+
+<!--  senior pub  start -->
+<link rel="stylesheet" href="/senior/css/jquery-ui.css">
+<link rel="stylesheet" href="/senior/css/common.m.css">
+<link rel="stylesheet" href="/senior/css/slick.css">
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/senior/img/apple-touch-icon.png">
+
+<!-- 
+<link rel="icon" sizes="16x16" href="/senior/img/favicon/favicon_16-16.ico">
+<link rel="icon" sizes="32x32" href="/senior/img/favicon/favicon_32-32.ico">
+
+<script>
+var userAgent = navigator.userAgent.toLowerCase(); // 접속 핸드폰 정보
+if( userAgent.match('android') ) {
+	document.write('<link rel="shortcut icon" href="/senior/img/shortcut-icon.png" />');
+} else {
+	document.write('<link rel="apple-touch-icon" href="/senior/img/apple-touch-icon.png" />');
+}
+</script>
+-->
+
+<script type="text/javascript" src="/senior/js/libs/jquery-1.12.4.min.js?20190610"></script>
+<script type="text/javascript" src="/senior/js/libs/jquery-ui.js"></script>
+<script type="text/javascript" src="/senior/js/libs/slick.min.js"></script>
+<script type="text/javascript" src="/senior/js/ui.global.js"></script>
+<script type="text/javascript" src="/senior/js/ui.common.js"></script>
+<!--  senior pub  end -->
+
+<script src="/com/js/clipboard.min.js?20190610"></script>
+<script src="/senior/js/kakao/kakao.min.js"></script>
+<script src="/com/js/jquery.easy-ticker.min.js"></script>
+
+<script src="/com/js/bluebird.min.js"></script>
+
+<script src="/senior/js/common.js?20190610"></script>
+
+<script src="/com/js/jquery.tmpl.min.js?20190610"></script>
+<script src="/com/js/base64Utils.js?20190610"></script>
+<script src="/com/js/jquery.form.js?20190610"></script>
+
+<script src="/com/js/common.js?20201009"></script>
+<script src="/com/js/commonFund.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+
+		var data = {};
+		data.outerHeight = window.outerHeight;
+		data.outerScale = 0.8;
+
+		// java 단 exception 발생 시 코드값 대로 메시지 alert 띄우도록!!
+		setTimeout(function() {
+
+			// 페이지 에러발생시 공통 처리
+			if ($.trim(sessionStorage.getItem("_errCd")) != "") { // 에러
+				if (sessionStorage.getItem("_errCd") == "404") {
+					comAlert(sessionStorage.getItem("_errCd")).then(
+							function(bool) {
+								sessionStorage.removeItem("_errCd");
+							});
+				} else {
+					if (sessionStorage.getItem("_errCd") != "400") {
+						comAlert(sessionStorage.getItem("_errMsgCtnt")).then(
+								function(bool) {
+									sessionStorage.removeItem("_errCd");
+								});
+					}
+				}
+			} else if($.trim(sessionStorage.getItem("_isDuplicate")) == "Y") { // 중복로그인
+				comAlert("다른 기기에서 로그인 정보가<br/>확인되어 로그아웃 되었습니다.").then(function(bool) {
+					sessionStorage.removeItem("_isDuplicate");
+					location.href = "/";
+				});
+			}
+			
+		}, 1);
+
+		$(document).ajaxSend(function(event, xhr, options) {
+			if (options.url.indexOf('COM000101.kb') > -1)
+				return;
+
+			ajaxindicatorstart('');
+		});
+
+		$(document).ajaxComplete(function(event,request, settings) {
+			ajaxindicatorstop();
+	        
+	        // 2021-01-27 중복 로그인 체크
+	        if( settings.dataType == "json" ) {
+	        	if( request.responseJSON['_isDuplicate'] != null && request.responseJSON['_isDuplicate'] != undefined && request.responseJSON['_isDuplicate'] == "Y" ) {
+	        		// 로그아웃 처리를 하고 중복에러 화면으로 이동한다.
+	        		location.href = "/senior/COM000021.kb";
+	        	}
+	        }
+		});
+
+		// Ajax 에러 발생시 공통 처리
+		$(document).ajaxError(
+				function(event, jqXHR, ajaxSettings, thrownError) {
+
+					$("#dimmed").remove();
+
+					var json = jqXHR.responseText;
+					console.log("ERROR :", json);
+
+					if ($.trim(json) != "") {
+						var err = JSON.parse(json);
+						comAlert(err._errMsgCtnt + "\n<span>[" + err._errCd
+								+ "]</span>");
+					}
+
+				});
+
+		//모바일에서 키패드가 올라올때 가려야하는 것들 설정.
+		$(window).resize(
+				function() {
+					if (window.outerHeight <= data.outerHeight
+							* data.outerScale) {
+						$('.bottom-fixed, .join-btn-wrap').css("position",
+								'absolute');
+					} else if (window.outerHeight >= data.outerHeight
+							* data.outerScale) {
+						$('.bottom-fixed, .join-btn-wrap').css("position",
+								'fixed');
+					}
+				});
+
+	});
+
+	function logout() {
+		//location.href = "/ctl/XAA72P21000.kb";
+	}
+
+	function ajaxindicatorstop() {
+		$('#resultLoading .bg').height('100%');
+		//     $('#resultLoading').fadeOut(300);
+		$('body').css('cursor', 'default');
+	}
+
+	function ajaxindicatorstart(text) {
+		if ($('body').find('#resultLoading').attr('id') != 'resultLoading') {
+			$('body')
+					.append(
+							'<div id="resultLoading" style="display:none"><div><div>'
+									+ text
+									+ '</div></div><div class="bg"></div></div>');
+		}
+
+		$('#resultLoading').css({
+			'width' : '100%',
+			'height' : '100%',
+			'position' : 'fixed',
+			'z-index' : '10000000',
+			'top' : '0',
+			'left' : '0',
+			'right' : '0',
+			'bottom' : '0',
+			'margin' : 'auto'
+		});
+
+		$('#resultLoading .bg').css({
+			'background' : '#000000',
+			'opacity' : '0.7',
+			'width' : '100%',
+			'height' : '100%',
+			'position' : 'absolute',
+			'top' : '0'
+		});
+
+		$('#resultLoading>div:first').css({
+			'width' : '250px',
+			'height' : '75px',
+			'text-align' : 'center',
+			'position' : 'fixed',
+			'top' : '0',
+			'left' : '0',
+			'right' : '0',
+			'bottom' : '0',
+			'margin' : 'auto',
+			'font-size' : '16px',
+			'z-index' : '10',
+			'color' : '#ffffff'
+
+		});
+
+		$('#resultLoading .bg').height('100%');
+		//     $('#resultLoading').fadeIn(300);
+		$('body').css('cursor', 'wait');
+	}
+
+	//쿠키설정	
+	function setCookie(name, value, expiredays) {
+		var todayDate = new Date();
+		todayDate.setDate(todayDate.getDate() + expiredays);
+		document.cookie = name + '=' + escape(value) + '; path=/; expires='
+				+ todayDate.toGMTString() + ';'
+	}
+
+	//쿠키 불러오기
+	function getCookie(name) {
+		var obj = name + "=";
+		var x = 0;
+		while (x <= document.cookie.length) {
+			var y = (x + obj.length);
+			if (document.cookie.substring(x, y) == obj) {
+				if ((endOfCookie = document.cookie.indexOf(";", y)) == -1)
+					endOfCookie = document.cookie.length;
+				return unescape(document.cookie.substring(y, endOfCookie));
+			}
+			x = document.cookie.indexOf(" ", x) + 1;
+			if (x == 0)
+				break;
+		}
+		return "";
+	}
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics 
+<script asyncsrc="https://www.googletagmanager.com/gtag/js?id=G-FKES0PHRVX"></script>
+-->
+<script asyncsrc="https://www.googletagmanager.com/gtag/js?id=G-LKX786T2EZ"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+
+	gtag('config', 'G-LKX786T2EZ');
+</script>
+<script asyncsrc="https://www.googletagmanager.com/gtag/js?id=UA-176739152-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-176739152-1');
+</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KDKLZD7');</script>
+<!-- End Google Tag Manager -->
+<!-- alert modal -->
+</head><body data-device="a"><div class="ui-modal type-system type-alert" id="uiSystemModal">
+	<div class="ui-modal-wrap">
+		<div class="ui-modal-body">
+			<p class="msg"></p>
+		</div>
+		<div class="ui-modal-footer">
+			<div class="btn-wrap">
+				<button type="button" class="btn-base" onclick="$plugins.uiModalClose({ id:'uiSystemModal'});" id="cancelAlertBtn">
+					<span>취소</span>
+				</button>
+				
+                
+                <button type="button" class="btn-primary" id="confAlertBtn">
+					<span id="conf_txt">확인</span>
+				</button>
+                
+			</div>
+		</div>
+	</div>
+</div>
+<!--// alert modal -->
+
+<script>
+	// comAlert("필수 동의가 필요한 정보입니다.<br>미동의 시, 회원가입을 진행할 수 없습니다.").then(function(bool) {
+	//     // 알럿 이후에 처리할 로직이 있다면 추가.
+	// });
+	function comAlert(_msg) {
+		return new Promise(function(resolve, reject) {
+			var _screnId = "XAA75M53010";
+			
+			$('#cancelAlertBtn').hide();
+			if (_msg == null || _msg == undefined)
+				_msg = "";
+			$('.ui-modal-body > .msg').html(_msg);
+			$plugins.uiModalOpen({
+				ps : "center",
+				id : "uiSystemModal"
+			});
+			
+			 if(_screnId == 'XAA75M01030' ){
+				 $('#MO01_trigger01_btn01').off().on('click', function(e) {
+						$plugins.uiModalClose({
+							id : 'uiSystemModal'
+						});
+						resolve(true);
+					});
+			 }else{
+				 $('#confAlertBtn').off().on('click', function(e) {
+						$plugins.uiModalClose({
+							id : 'uiSystemModal'
+						});
+						resolve(true);
+					});
+			 }
+		});
+	}
+
+	// comConfAlert("골든카드에서 기기의 사진 파일에 엑세스하도록 허용하시겠습니까?").then(function(bool) {
+	//     if( bool ) {
+	//         // 확인일때 처리 로직 추가	
+	//     }
+	// });
+	// _effectYn 는 comConfAlert 안에 comAlert 를 띄울때 false 로 세팅한다.
+	function comConfAlert(_msg, _effectYn) {
+		return new Promise(function(resolve, reject) {
+			$('#cancelAlertBtn').css('display', 'inline-block');
+			if (_msg == null || _msg == undefined)
+				_msg = "";
+			$('.ui-modal-body > .msg').html(_msg);
+			$plugins.uiModalOpen({
+				ps : "center",
+				id : "uiSystemModal"
+			});
+			$('#cancelAlertBtn').off().on('click', function(e) {
+				$plugins.uiModalClose({
+					id : 'uiSystemModal'
+				});
+				resolve(false);
+			});
+			$('#confAlertBtn').off().on(
+					'click',
+					function(e) {
+						if (_effectYn == null || _effectYn == undefined
+								|| _effectYn == true) {
+							$plugins.uiModalClose({
+								id : 'uiSystemModal'
+							});
+						} else {
+							$plugins.uiModalNoEffectClose({
+								id : 'uiSystemModal'
+							});
+						}
+						resolve(true);
+					});
+		});
+	}
+	
+	function comConfAlertButton( _msg, conf_txt, _effectYn ) {
+        return new Promise(function(resolve, reject) {
+    		$('#conf_txt').text(conf_txt);
+            $('#cancelAlertBtn').css('display', 'inline-block');
+			if (_msg == null || _msg == undefined)
+				_msg = "";
+			$('.ui-modal-body > .msg').html(_msg);
+			$plugins.uiModalOpen({
+				ps : "center",
+				id : "uiSystemModal"
+			});
+			$('#cancelAlertBtn').off().on('click', function(e) {
+				$plugins.uiModalClose({
+					id : 'uiSystemModal'
+				});
+				resolve(false);
+			});
+			$('#confAlertBtn').off().on(
+					'click',
+					function(e) {
+						if (_effectYn == null || _effectYn == undefined
+								|| _effectYn == true) {
+							$plugins.uiModalClose({
+								id : 'uiSystemModal'
+							});
+						} else {
+							$plugins.uiModalNoEffectClose({
+								id : 'uiSystemModal'
+							});
+						}
+						resolve(true);
+					});
+        });
+	}
+	
+	function memberJoinConfAlert( _msg, _effectYn) {
+        return new Promise(function(resolve, reject) {
+    		$('#cancelAlertBtn').css('display','inline-block');
+    		if( _msg == null || _msg == undefined ) _msg = "";
+    		
+    		if (_msg == null || _msg == undefined)
+				_msg = "";
+			$('.ui-modal-body > .msg').html(_msg);
+			$plugins.uiModalOpen({
+				ps : "center",
+				id : "uiSystemModal"
+			});
+			
+  			$('#MO01_trigger01_btn01').off().on('click',function(e) {
+				if (_effectYn == null || _effectYn == undefined
+						|| _effectYn == true) {
+					$plugins.uiModalClose({
+						id : 'uiSystemModal'
+					});
+				} else {
+					$plugins.uiModalNoEffectClose({
+						id : 'uiSystemModal'
+					});
+				}
+				resolve(true);
+ 			});
+        });
+	}
+</script>
+
+
+
+<script type="text/javascript">
+	
+		$(function(){
+			var data = {};
+			data.screnId = "XAA75M53010";
+			data.fontSizeMin = 8;
+		    data.fontSizeMax = 24;
+		    data.fontSizeScale = 3;
+			
+            if(!(data.screnId == "XAA75M02000" || data.screnId =="XAA75M01020" || data.screnId=="XAA75M01030")){
+        		sessionStorage.removeItem("ecrypCertncdM");
+        		sessionStorage.removeItem("ecrypLnkdM");
+        		sessionStorage.removeItem("ecrypLnkdNM");
+            }
+		    
+			//뒤로가기 버튼
+			$('.btn-back').on('click', function(e){
+				e.preventDefault();
+				
+				//console.log( "------ 뒤로가기 버튼 ["+$('.btn-back').data("screnId")+"], ["+imageAttachYN+"]" );
+				
+				if( data.screnId == "XAA75M07041" && goldenCardMakeYN == true ) {
+	        		comConfAlert("화면을 이동하시겠습니까?<br/>이동시, 작업하신 내용은 저장되지 않습니다.").then(function(bool) {
+	        			if( bool ) {
+	        				// 카드목록으로 이동한다.
+					        let dataTemp = {};
+					        dataTemp.bltsDstcd = '03'; // 게시글구분코드 03 : 골든카드
+					        dataTemp.gldncdDstcd = '1'; // 1 - 영화포스터, 2 - 기념일, 3 - 명절/계절, 4 - 안부/명언
+					        dynamicFormSubmit("/senior/XAA75M07040.kb", "POST", dataTemp);
+					        return;
+	        			}
+					});
+				} else if( data.screnId == "XAA75M07041" ) {
+    				// 카드목록으로 이동한다.
+			        let dataTemp = {};
+			        dataTemp.bltsDstcd = '03'; // 게시글구분코드 03 : 골든카드
+			        dataTemp.gldncdDstcd = '1'; // 1 - 영화포스터, 2 - 기념일, 3 - 명절/계절, 4 - 안부/명언
+			        dynamicFormSubmit("/senior/XAA75M07040.kb", "POST", dataTemp);
+				} else if( data.screnId == "XAA75M07043" ) {
+    				// 카드제작으로 이동한다.
+					dynamicFormSubmit(document.referrer, "POST", window.data);
+				}else if(data.screnId == "XAA72M07021" ) {
+    				//이벤트 목록화면으로  이동한다.
+					location.href = "/senior/XAA72M07010.kb";
+				}else if(data.screnId == "XAA71M07100" ) {
+    				//세미나 목록화면으로  이동한다.
+					location.href = "/senior/XAA72M07080.kb";
+				}
+				else if(data.screnId == "XAA72M07060") {
+    				//커뮤니티 목록화면으로  이동한다.
+    				dynamicFormSubmit("/senior/XAA72M07050.kb", "POST", window.data);
+				}
+				else if(data.screnId == "XAA72M05020") {
+    				//라이프뉴스 
+    				var lifeMenu = "/senior/XAA72M05010.kb";//건강탭
+    				
+    				if(window.data.ctntDstcd == "08"){
+    					lifeMenu = "/senior/XAA72M05011.kb";//여가탭
+    				}else if(window.data.ctntDstcd == "09"){
+    					lifeMenu = "/senior/XAA72M05012.kb";//트렌드탭
+    				}
+    				
+    				dynamicFormSubmit(lifeMenu, "POST", window.data);
+				}
+				else if(data.screnId == "XAA72M06060") {
+    				//전문가강의 
+    				var lectureMenu = "/senior/XAA72M06050.kb";//부동산탭
+    				
+    				if(window.data.spctLctrDstcd == "4"){
+    					lectureMenu = "/senior/XAA72M06053.kb";//재태크탭
+    				}else if(window.data.spctLctrDstcd == "3"){
+    					lectureMenu = "/senior/XAA72M06052.kb";//법률탭
+    				}
+    				
+    				dynamicFormSubmit(lectureMenu, "POST", window.data);
+				}
+				else {
+					
+					/*
+					if(!!window.data){
+                        dynamicFormSubmit(document.referrer, "POST", window.data);
+                    }else{
+                        history.back();
+                    }
+					*/
+					
+		        	history.back();
+				}
+				
+			});
+			
+			//.dep3 에 자식이 없으면 .in-sub 및 .dep3 없애기 / 자식이 있으면 href 없애기
+			$('.dep3').each(function(){
+				$this = $(this);
+				$siblings = $(this).siblings('a');
+				
+				if($this.children().length == 0){
+					$this.remove();
+					$siblings.removeClass('in-sub');
+				}else{
+					$siblings.attr('href', '#');
+				}
+			});
+			
+			//상단 타이틀 , 상세페이지 등 메뉴화면표시여부 에 따라 감추기
+			$(".all-dep a:not(.dep1)").each(function(){
+				var url = $(this).attr('href');
+				var visibleYn = $(this).data('visibleYn');
+				
+				if(url.indexOf(data.screnId) > -1){
+					//상단 타이틀
+                    setHeaderTitle($(this).parents('.lv2').find('a:first').text());
+				}
+				
+				//상세페이지 등 메뉴화면표시여부 에 따라 감추기
+				if(visibleYn == "0"){
+					$(this).parent().hide();
+				}
+			});
+			
+			//로그인
+			$('#btnLogin').on('click', function(e){
+				e.preventDefault();
+				
+				if(!!!window.data)
+				{
+					window.data = {};
+				}
+				
+                //탈퇴 후 바로 로그인 시 리다이렉트 탈퇴완료로 가지 않게 제외!
+                if(("XAA75M53010" != "XAA75P08130") && ("XAA75M53010" != "XAA75M08130")){
+                	window.data.redirectPageId = "XAA75M53010";                	
+                }
+				
+				dynamicFormSubmit("/senior/XAA75M02000.kb", "POST", window.data);
+			});
+			
+			//회원가입
+			$('#btnJoin').on('click', function(e){
+				e.preventDefault();
+				
+				if(!!!window.data)
+				{
+					window.data = {};
+				}
+
+				window.data.redirectPageId = "XAA75M53010";
+				dynamicFormSubmit("/senior/XAA75M01020.kb", "POST", window.data);
+			});
+			
+			//로그아웃
+			$('#btnLogout').off().on('click', function(e){
+				e.preventDefault();
+				
+                if(!!!window.data)
+                {
+                    window.data = {};
+                }
+                
+                //로그아웃 후 현재 페이지로 이동
+                window.data.referer = "/senior/XAA75M53010.kb";
+                
+                dynamicFormSubmit("/senior/logout.kb", "POST", window.data);
+			});
+	
+			if ( document.referrer && document.referrer.indexOf("senior") != -1 ) 
+			{ 
+				//뒤로갈 히스토리가 있으면 진입
+			}
+			else 
+			{
+				// 히스토리가 없으면,
+				$('.btn-back').hide();
+			}
+			
+			//폰트 작게 선택시
+	        $('.control-font > .btn-minus').on('click', function(e){
+	            var $this = $('.view-content');
+	            var fontSize = parseInt($this.css('font-size')) - data.fontSizeScale;
+	            
+	            $this.css('font-size', fontSize < data.fontSizeMin ? data.fontSizeMin : fontSize);
+	            
+	            // editor span 태그 속성에 적용된 개별 폰트 조정
+	            var spanNodes = $('.view-section').children().find('span');
+	            
+	            spanNodes.each(function(){
+	            	var spanFontSize = parseInt($(this).css('font-size')) - data.fontSizeScale;
+	            	$(this).css('font-size', spanFontSize < data.fontSizeMin ? data.fontSizeMin : spanFontSize);
+	            })
+	        });
+	        
+	        //폰트 크게 선택시
+	        $('.control-font > .btn-plus').on('click', function(e){
+	            var $this = $('.view-content');
+	            var fontSize = parseInt($this.css('font-size')) + data.fontSizeScale;
+	            
+	            $this.css('font-size', fontSize > data.fontSizeMax ? data.fontSizeMax : fontSize);
+	            
+	            // editor span 태그 속성에 적용된 개별 폰트 조정
+	            var spanNodes = $('.view-section').children().find('span');
+	            
+	            spanNodes.each(function(){
+	            	var spanFontSize = parseInt($(this).css('font-size')) + data.fontSizeScale;
+	            	$(this).css('font-size', spanFontSize > data.fontSizeMax ? data.fontSizeMax : spanFontSize);
+	            })
+	        });
+			
+			//로고 클릭
+			$('.kb-logo, .header-top, #kbLogo1').on('click', function(e){
+				e.preventDefault();
+				location.href='/senior/XAA72M03000.kb';
+			});
+			
+			//하단 패밀리사이트
+            $('#footer select').on('change', function(e){
+                window.open($(this).val());
+            });
+			
+			// 골든카드 코치마크
+			$('#goldenCardCochCloseBtn').off().on('click', function(e){
+				e.preventDefault();
+				
+				if($('#uiChk').is(":checked")) {
+					localStorage.setItem('goldenCardGuideYN', 'Y');
+				}
+				
+				$plugins.uiModalClose({ id:'modal_coach'});
+				
+			});
+	        
+	        //setHeaderTitle();
+	        
+			//문의 등록 버튼 클릭시
+	        $('.needLogin').on('click', function(e){
+	            var url = $(this).data('url');
+                
+                checkLogin(url);
+	        });
+			
+	        
+	        
+	        //헬스케어 화면 등에서 상단 마지막 탭 선택시 탭영역을 모두 보이도록 이동 처리
+            $('.tab-wrap.scroll > .inner > button').each(function(index, item){
+                if( $(this).hasClass('on') && index >= 2){
+                    $('.tab-wrap.scroll > .inner').scrollLeft(9999);
+                }
+            });
+	        
+		});
+		
+		function setHeaderTitle(str)
+		{
+			$('.header-title').text(str);
+		}
+		
+		/*
+        * url : 로그인 정보가 존재할시 리다이렉트할 url
+        */
+        function checkLogin(url)
+        {
+            var str = "로그인 후 이용하실 수 있습니다.<br/>이동 하시겠습니까?";
+            
+            if(!!url)
+            {
+                if(true)
+                {
+                    comConfAlert(str).then(function(b){
+                        if(b){
+                            if(!!!window.data){
+                                window.data = {};
+                            }
+                            
+                            window.data.redirectPageId = "XAA75M53010";
+                            
+                            dynamicFormSubmit("/senior/XAA75M02000.kb", "POST", window.data);
+                        }else{
+                            return false;
+                        }
+                    });
+                }
+                else
+                {
+                    location.href = url;
+                }
+            }
+            else
+            {
+                if(true)
+                {
+                    comConfAlert(str).then(function(b){
+                        if(b){
+                            if(!!!window.data){
+                                window.data = {};
+                            }
+                            
+                            window.data.redirectPageId = "XAA75M53010";
+                            
+                            dynamicFormSubmit("/senior/XAA75M02000.kb", "POST", window.data);
+                        }else{
+                        	//커뮤니티 상세 비로그인 접근 후 로그인 창 취소버튼 클릭 시 메인화면으로
+                        	window.data.redirectPageId = "XAA75M53010";
+                        	if(window.data.redirectPageId == "XAA72M07060"){
+                        		location.replace("/senior/XAA72M03000.kb");
+                        	}else{
+                        		return false;
+                        	}
+                        }
+                    });
+                }
+                else
+                {
+                    return true;  
+                }
+            }
+            
+        }
+		
+		//화면상단컨텐츠조회
+        var selectScreenTopContentsInfo = function(screnId){
+            return new Promise(function(resolve, reject) {
+                var data = {};
+                
+                data.screnId = screnId;
+                
+                $.ajax({
+                    url : "/senior/ajax/XAA72M99010A7.kb"
+                    ,type : "POST"
+                    ,data : data
+                    ,success : function(result){
+                    	if(Object.keys(result).length > 0){
+                            resolve(result);
+                        }else{
+                            reject();
+                        }
+                    }
+                    ,error : function(){
+                        reject();
+                    }
+                });
+            });
+        };
+		
+	</script>
+
+
+	<div class="wrapper">
+		<header class="base-header" id="baseHeader">
+			
+
+	
+	
+			
+			<div class="header-top">
+				<span>KB골든라이프 X</span>
+			</div>
+			<div class="header-wrapper">
+				<h1 class="header-title">건강상담</h1>
+				<button type="button" class="btn-back" aria-label="이전"></button>
+				<button type="button" class="btn-search" aria-label="검색" onclick="location.href='/senior/XAA00M00020.kb'"></button>
+				<button type="button" class="btn-sidebar" aria-label="전체메뉴 열기">
+					<span></span>
+				</button>
+			</div>
+			
+	
+
+	
+		</header>
+			<!-- aside 전체메뉴 -->
+			<nav class="header-nav">
+				<div class="inner">
+					<div class="state-area">
+						<div class="top-box">
+							<h2 id="kbLogo1">KB골든라이프 엑스</h2>
+							<button type="button" class="btn-home" onclick="location.href='/senior/XAA72M03000.kb'">
+								<span class="blind">메인</span>
+							</button>
+							<button type="button" class="btn-side-close" aria-label="전체메뉴 닫기">
+								<span></span>
+							</button>
+						</div>
+						
+							<div class="log-before">
+								<p>회원가입 후 이용해주세요.</p>
+								<div class="btns">
+									<button type="button" class="btn-round" id="btnJoin">회원가입</button>
+									<button type="button" class="btn-round" id="btnLogin">로그인</button>
+								</div>
+							</div>
+						
+						
+					</div>
+					<div class="all-dep">
+						<ul>
+							
+								
+									
+										
+											<li id="S030000"><a href="#" class="dep1"><span>자산관리</span></a>
+												<ul class="dep2">
+										
+										
+						
+						
+						
+							
+						
+							
+								
+									
+										<li id="S030100" class="lv2"><a href="#" data-menu-id="S030000" data-visible-yn="1" class="in-sub">금융정보</a>
+											<div class="dep3">
+									
+									
+					
+						
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA72M06010.kb" data-menu-id="S030000" data-visible-yn="1">부동산</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA72M06011.kb" data-menu-id="S030000" data-visible-yn="1">재테크</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+										<li style="display: none;"><a href="/senior/XAA72M06020.kb" data-menu-id="S030000" data-visible-yn="0">금융정보상세</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S030200" class="lv2"><a href="#" data-menu-id="S030000" data-visible-yn="1" class="in-sub">전문가 상담</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA72M06021.kb" data-menu-id="S030000" data-visible-yn="1">전문가 상담 안내</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+										<li><a href="/senior/XAA72M06030.kb" data-menu-id="S030000" data-visible-yn="1">전문가 상담 신청</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S030300" class="lv2"><a href="#" data-menu-id="S030000" data-visible-yn="1" class="in-sub">은퇴설계 상담</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA71M06041.kb" data-menu-id="S030000" data-visible-yn="1">은퇴설계 상담 안내</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+										<li><a href="/senior/XAA71M06045.kb" data-menu-id="S030000" data-visible-yn="1">은퇴설계 상담 예약</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S030900" class="lv2"><a href="#" data-menu-id="S030000" data-visible-yn="1" class="in-sub">전문가 강의</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA72M06050.kb" data-menu-id="S030000" data-visible-yn="1">부동산</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA72M06053.kb" data-menu-id="S030000" data-visible-yn="1">재테크</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA72M06052.kb" data-menu-id="S030000" data-visible-yn="1">법률/세무</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+										<li style="display: none;"><a href="/senior/XAA72M06060.kb" data-menu-id="S030000" data-visible-yn="0">전문가강의상세</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+									
+										
+										
+						
+							</div></li></ul>
+							</li>
+							<li id="S020000"><a href="#" class="dep1"><span>라이프</span></a>
+								<ul class="dep2">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<li id="S020100" class="lv2"><a href="#" data-menu-id="S020000" data-visible-yn="1" class="in-sub">라이프 뉴스</a>
+											<div class="dep3">
+									
+									
+					
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA72M05010.kb" data-menu-id="S020000" data-visible-yn="1">건강</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA72M05011.kb" data-menu-id="S020000" data-visible-yn="1">여가</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA72M05012.kb" data-menu-id="S020000" data-visible-yn="1">트렌드</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+										<li style="display: none;"><a href="/senior/XAA72M05020.kb" data-menu-id="S020000" data-visible-yn="0">라이프뉴스상세</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S020200" class="lv2"><a href="/senior/XAA72M05030.kb" data-menu-id="S020000" data-visible-yn="1" class="">쇼핑</a>
+					
+				</li>
+				<li id="S020300" class="lv2"><a href="#" data-menu-id="S020000" data-visible-yn="1" class="in-sub">창업/취업</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA72M05040.kb" data-menu-id="S020000" data-visible-yn="1">창업</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA72M05061.kb" data-menu-id="S020000" data-visible-yn="1">취업</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+										<li style="display: none;"><a href="/senior/XAA72M05050.kb" data-menu-id="S020000" data-visible-yn="0">창업/취업상세</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+									
+										
+										
+						
+							</div></li></ul>
+							</li>
+							<li id="S040000"><a href="#" class="dep1"><span>참여</span></a>
+								<ul class="dep2">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<li id="S040100" class="lv2"><a href="/senior/XAA72M07010.kb" data-menu-id="S040000" data-visible-yn="1" class="">이벤트</a>
+											
+				</li>
+				<li id="S041900" class="lv2" style="display: none;"><a href="/senior/XAA75M07042.kb" data-menu-id="S040000" data-visible-yn="0" class="">골든카드 만들기</a>
+					
+				</li>
+				<li id="S042100" class="lv2" style="display: none;"><a href="/senior/XAA75M07043.kb" data-menu-id="S040000" data-visible-yn="0" class="">골든카드 만들기</a>
+					
+				</li>
+				<li id="S040200" class="lv2"><a href="/senior/XAA75M07030.kb" data-menu-id="S040000" data-visible-yn="1" class="">골든카드</a>
+					
+				</li>
+				<li id="S040300" class="lv2"><a href="/senior/XAA72M07080.kb" data-menu-id="S040000" data-visible-yn="1" class="">세미나</a>
+					
+				</li>
+				<li id="S040900" class="lv2" style="display: none;"><a href="/senior/XAA72M07020.kb" data-menu-id="S040000" data-visible-yn="0" class="">이벤트상세</a>
+					
+				</li>
+				<li id="S041100" class="lv2" style="display: none;"><a href="/senior/XAA75M07044.kb" data-menu-id="S040000" data-visible-yn="0" class="">골든카드 상세</a>
+					
+				</li>
+				<li id="S041300" class="lv2" style="display: none;"><a href="/senior/XAA72M07090.kb" data-menu-id="S040000" data-visible-yn="0" class="">세미나상세</a>
+					
+				</li>
+				<li id="S041500" class="lv2" style="display: none;"><a href="/senior/XAA75M07040.kb" data-menu-id="S040000" data-visible-yn="0" class="">골든카드 만들기</a>
+					
+				</li>
+				<li id="S041700" class="lv2" style="display: none;"><a href="/senior/XAA75M07041.kb" data-menu-id="S040000" data-visible-yn="0" class="">골든카드 만들기</a>
+					</li></ul>
+							</li>
+							<li id="S010000"><a href="#" class="dep1"><span>헬스케어</span></a>
+								<ul class="dep2">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<li id="S010100" class="lv2"><a href="#" data-menu-id="S010000" data-visible-yn="1" class="in-sub">건강관리</a>
+											<div class="dep3">
+									
+									
+					
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA75M52000.kb" data-menu-id="S010000" data-visible-yn="1">운동코칭</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA75M52010.kb" data-menu-id="S010000" data-visible-yn="1">건강체크</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA75M52020.kb" data-menu-id="S010000" data-visible-yn="1">건강식단</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+										<li><a href="/senior/XAA75M52030.kb" data-menu-id="S010000" data-visible-yn="1">요양병원 안내</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S010200" class="lv2"><a href="#" data-menu-id="S010000" data-visible-yn="1" class="in-sub">건강상담</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA75M53000.kb" data-menu-id="S010000" data-visible-yn="1">원스탑 건강상담 예약</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+										<li><a href="/senior/XAA75M53010.kb" data-menu-id="S010000" data-visible-yn="1">온라인 건강·심리 상담</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S010300" class="lv2"><a href="#" data-menu-id="S010000" data-visible-yn="1" class="in-sub">진료예약</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA75M54000.kb" data-menu-id="S010000" data-visible-yn="1">원스탑 건강검진 예약</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+									
+										<li><a href="/senior/XAA75M54010.kb" data-menu-id="S010000" data-visible-yn="1">진료예약</a></li>
+									
+								
+							
+						
+							
+								
+									
+									
+										<li><a href="/senior/XAA75M54020.kb" data-menu-id="S010000" data-visible-yn="1">프리미엄 진료</a></li>
+										</ul>
+									
+									
+								
+							
+						
+							
+						
+							
+						
+							
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+									
+					
+				</div>
+				</li>
+				<li id="S010400" class="lv2"><a href="#" data-menu-id="S010000" data-visible-yn="1" class="in-sub">라이프케어</a>
+					<div class="dep3">
+						
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+									
+										<ul>
+											<li><a href="/senior/XAA75M55000.kb" data-menu-id="S010000" data-visible-yn="1">케어 서비스</a></li>
+									
+									
+									
+								
+							
+						
+							
+								
+									
+									
+										<li><a href="/senior/XAA75M55010.kb" data-menu-id="S010000" data-visible-yn="1">상조 지원 서비스</a></li>
+										</ul>
+									
+									
+								
+							
+						
+						
+						
+							
+						
+							
+						
+						
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+								
+						
+						</div></li></ul>
+					</li></ul></div>
+					<div class="footer-menu">
+						<a href="/senior/XAA72M10030.kb">공지사항</a> <a href="/senior/XAA72M10050.kb">이용안내(FAQ)</a> <a href="#none" class="needLogin" data-url="/senior/XAA71M10070.kb">1:1 문의</a>
+					</div>
+	</div>
+	</nav>
+	<!--// aside 전체메뉴 -->
+	<div class="container">
+		<!-- content-wrap-->
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="tab-wrap scroll">
+	<div class="inner">
+	    <button type="button" class="btn-tab " data-url="/senior/XAA75M53000.kb">원스탑 건강상담 예약</button>
+	    <button type="button" class="btn-tab on" data-url="/senior/XAA75M53010.kb">온라인 건강·심리 상담</button>
+	</div>
+</div>
+
+<div class="content-top">
+	<iframe src="https://m.kbxhealth.com?seniorParam1=Gjb9JY%2F7YIbiR5HeOcI%2BLw%3D%3D&amp;seniorParam2=Gjb9JY%2F7YIbiR5HeOcI%2BLw%3D%3D&amp;seniorParam3=Gjb9JY%2F7YIbiR5HeOcI%2BLw%3D%3D&amp;seniorParam4=Gjb9JY%2F7YIbiR5HeOcI%2BLw%3D%3D&amp;seniorParam5=naTwBpvW0hm9vnHafvxAzQ%3D%3D&amp;seniorParam6=tCeR8ExF6C2H9hP0T5FXHw%3D%3D&amp;seniorParam7=mui6k%2BsPnRHytHIMM%2FO1dQ%3D%3D&amp;seniorParam8=mui6k%2BsPnRHytHIMM%2FO1dQ%3D%3D" frameborder="0" id="contentIframe" name="contentIframe" width="100%" height="1429" marginwidth="0" marginheight="0" scrolling="no" allowfullscreen=""></iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(function(){
+        
+        $('.btn-tab').on('click', function(e){
+        	location.href = $(this).data('url');
+        });
+        
+    });
+    
+    window.onscroll = sendMessageIframe;
+    
+	function sendMessageIframe(){
+		var iframe = document.getElementById('contentIframe').contentWindow;
+		
+		// 헬스케어에 window를 보낸다.
+		var paramObj = {};
+		paramObj['window.innerHeight'] = window.innerHeight;
+		paramObj['window.outerHeight'] = window.outerHeight;
+		paramObj['document.body.scrollHeight'] = document.body.scrollHeight;
+		paramObj['document.documentElement.scrollHeight'] = document.documentElement.scrollHeight;
+		paramObj['document.body.clientHeight'] = document.body.clientHeight;
+		paramObj['document.documentElement.clientHeight'] = document.documentElement.clientHeight;
+		paramObj['document.body.scrollTop'] = document.body.scrollTop;
+		paramObj['document.documentElement.scrollTop'] = document.documentElement.scrollTop;
+		
+		var iframes = document.getElementById("contentIframe");
+		paramObj['iframes.offsetHeight'] = iframes.offsetHeight;
+		paramObj['iframes.offsetTop'] = iframes.offsetTop;
+		
+		iframe.postMessage({'seniorWindow' : paramObj}, '*');
+	}
+    
+    window.addEventListener('message', function(e) {
+    	
+    	if( e.data.callType == "AUTOHEIGHT" ) {
+        	
+    		var iframes = document.getElementById("contentIframe");
+    		
+        	// 헬스케어 iframe 높이값이 디바이스 높이값보다 작다면 iframe 높이값을 늘린다.
+        	if( window.outerHeight - iframes.offsetTop == e.data.childHeight ) {
+            	document.getElementById("contentIframe").height = parseInt(e.data.childHeight) - 5;
+        	} else {
+            	document.getElementById("contentIframe").height = parseInt(e.data.childHeight) + 10;
+        	}
+        	
+        	// 헬스케어에 window 객체를 전달한다.
+        	sendMessageIframe();
+        	
+    	} else if( e.data.callType == "BOOKMARK" ) {
+        	
+        	// 헬스케어 찜하기를 한다.
+        	let bookmark = e.data.bookmark;
+        	let title = e.data.title;
+        	let movieUrl = e.data.movieUrl;
+        	let imageUrl = e.data.imageUrl;
+        	let subTitle1 = e.data.subTitle1;
+        	let subTitle2 = e.data.subTitle2;
+        	
+			$.ajax({
+				url : "/senior/ajax/XAA75M52000A9.kb"
+				,type : "POST"
+				,data : {'bookmark' : bookmark, 'title' : title, 'movieUrl' : movieUrl, 'imageUrl' : imageUrl, 'mfileDesc1' : subTitle1, 'mfileDesc2' : subTitle2}
+				,dataType : "json"
+				,success : function(data){
+					
+				}
+				,error : function(){
+					console.log("에러");
+				}
+				,complete : function(){
+				}
+			});
+        	
+    	} else if( e.data.callType == "LOGINMOVE" ) {
+    		
+        	// 로그인 화면 이동 요청
+    		comMovePage( "/senior/XAA75M02000.kb", {} );
+        	
+    	} else if( e.data.callType == "BADGEMOVE" ) {
+    		
+        	// 뱃지 안내 화면으로 이동
+    		comMovePage( "/senior/XAA72M10061.kb", {} );
+        	
+    	} else if( e.data.callType == "CONTMOVE" ) {
+    		
+    		// 마이페이지의 3자 제공 동의 화면 이동 요청
+    		comMovePage( "/senior/XAA75M08010.kb", {} );
+        	
+    	}
+    	
+    });
+    
+</script>
+
+		<!-- //content-wrap-->
+	</div>
+	
+	
+</div>
+
+
+
+
+
+
+
+</body>
+<div style="background: rgba(50, 131, 168, 0.5); position: absolute; z-index: 2147483647;"></div>
+</html>
