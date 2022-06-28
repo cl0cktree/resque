@@ -1,0 +1,38 @@
+#########################
+[12.50%] 1.06 sec = ShowSplash
+[0.77%] 0.065 sec = LoadBlackFort
+[0.00%] 0 sec = new HwpAppMain
+[0.00%] 0 sec = InitDependencyLoader
+[0.48%] 0.04 sec = InitFrameEngine
+[0.10%] 0.009 sec = HwpApp.Instance.CreateInstance
+*[0.65%] 0.056 sec = StringManager.InitInternal
+*[0.08%] 0.006 sec = SkinManager.InitInternal_NoFrame
+*[1.41%] 0.119 sec = CultureFontManager.InitInternal
+*[0.01%] 0.001 sec = DataSourceManager.InitInternal
+*[2.58%] 0.219 sec = (InitCommandManager + InitAppEngine) by subThread
+[2.61%] 0.222 sec = Init FrameEngineManager(string, skin, culture, datasource) + subThread(command, appEngine)
+[0.01%] 0.001 sec = RegisterDRMModule
+========================
+total: 8.483 sec
+main: 1.397 sec
+others: 7.086 sec
+#########################
+#########################
+[1.88%] 0.325 sec = ShowSplash
+[0.13%] 0.023 sec = LoadBlackFort
+[0.00%] 0 sec = new HwpAppMain
+[0.00%] 0 sec = InitDependencyLoader
+[0.25%] 0.044 sec = InitFrameEngine
+[0.50%] 0.087 sec = HwpApp.Instance.CreateInstance
+*[0.20%] 0.035 sec = StringManager.InitInternal
+*[0.04%] 0.006 sec = SkinManager.InitInternal_NoFrame
+*[0.46%] 0.08 sec = CultureFontManager.InitInternal
+*[0.01%] 0.001 sec = DataSourceManager.InitInternal
+*[0.88%] 0.153 sec = (InitCommandManager + InitAppEngine) by subThread
+[0.89%] 0.155 sec = Init FrameEngineManager(string, skin, culture, datasource) + subThread(command, appEngine)
+[0.00%] 0.001 sec = RegisterDRMModule
+========================
+total: 17.311 sec
+main: 0.635 sec
+others: 16.676 sec
+#########################
