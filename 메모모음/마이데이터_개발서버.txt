@@ -1,0 +1,2 @@
+https://dev.mys.kbstar.com:8000/mydataservice-front/financialasset/myvault/myVaultCashRegForm.do
+https://dev.mys.kbstar.com:8000/mydataservice-front/tiles/sub/commonPage.do

@@ -1,0 +1,21 @@
+https://zobank.kbstar.com/publishing_guide/obank/obank_2018/50.publish/coding_list4.html - 인터넷뱅킹 서비스 개편 2018
+https://zobank.kbstar.com/publishing_guide/obank/obiz2019/01.obiz/guide/index.html - 기업 디지털금융 비대면 채널
+https://zobank.kbstar.com/mobank5/publishing_guide/html3/guide.html - 스타뱅킹 3.0
+https://zobank.kbstar.com/mobank5/publishing_guide/html5_1/guide/star2018.html - 스타뱅킹5.1
+https://zmnbank.kbstar.com/mnbank/guide/index.html - 뉴스타뱅킹
+https://zobank.kbstar.com/mpfm/html/2019/guide/guide/index.html - 마이머니
+https://zobank.kbstar.com/publishing_guide/obiz/obiz_2021/index.html - KB국민은행 기업뱅킹 가이드
+https://zmnbank.kbstar.com/mnbank/guide/sample/samp.html - 뉴스뱅 타이틀 구조 예시용 페이지 개발자 모드로 돔구조 확인용(내용없음).
+
+https://zmnbank.kbstar.com/mnbank/jsp/common/D000020 - 뉴스타뱅킹 계정 링크
+https://dev-mys.mydata.kbstar.com:8000/install/appdownload.html - 마이머니(안드로이드) 테스트 파일 링크
+https://zmbank.kbstar.com/etcApp/zindex.html - 다운로드센터 링크모음 1(뉴스뱅,기업뱅킹,스타알림,마이머니,등 다수)
+https://zmbank.kbstar.com/test/cwy.html - 다운로드센터 링크모음 2(마이데이타 관련 다수)
+https://zmnbank.kbstar.com/mnbank/dev/apk_r/zindex.html - KB스타뱅킹6.0 안드로이드 Real, Stg, Dev 설치파일
+https://testflight.apple.com/join/Z20jwKgp - 아이폰용 마이데이타 테스트 파일 다운 링크
+
+https://cloud.nurier.co.kr/mydata/__path/index.html - 마이데이터 버전1
+https://cloud.nurier.co.kr/mydata_newsb/__path/index.html - 마이데이터 버전2(현행)
+https://mintit.co.kr/sale/price_check.do - 민팃
+
+https://webmail.kbfg.com/kbmail/account/extlogin.do - kb웹메일

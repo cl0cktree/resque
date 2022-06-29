@@ -1,0 +1,13 @@
+1. measurement 지우기 --! / not-ready 제거시 비활성화 방법 확인 --!
+2. label의 for 제거 후 제목 에니메이션 확인 --!
+
+3. input 하단의 em.validation 에 대한 부분 확인 --!
+4. mys_17_01_04_p2.html 파일의 <em class="validation">Message</em> 부분에 대한 답변(7번 항목)  --!
+
+5. 320px 확인 --!
+
+6. no-transition 답변 --!
+
+7. data-action=close 확인  --!
+8. 10번 항목(label text 확인)
+9. 목록 부분의 카드들 color 변경  --!
